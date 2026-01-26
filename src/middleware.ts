@@ -9,8 +9,8 @@ const roleBasedRoutes = {
 };
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  // const user = undefined;
-  const user = { role: "USER" };
+  const user = undefined;
+  // const user = { role: "USER" };
 
   if (!user) {
     if (authRoutes.includes(pathname)) {

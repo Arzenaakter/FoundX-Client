@@ -1,15 +1,27 @@
 "use client";
 import FxForm from "@/src/components/form/FxForm";
 import FXInput from "@/src/components/form/FXInput";
+import { useUserRegistration } from "@/src/hooks/auth.hook";
 import registerValidationSchema from "@/src/schema/register.schema";
 import { registerUser } from "@/src/services/AuthService";
 import { Button } from "@heroui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import Link from "next/link";
 import React from "react";
 import { FieldValues, SubmitHandler } from "react-hook-form";
+import { toast } from "sonner";
 
 const Register = () => {
+  const {
+    mutate: handleUserRegistration,
+    data,
+    isSuccess,
+    isError,
+    isPending,
+  } = useUserRegistration();
+
+  console.log({ data, isSuccess, isError, isPending });
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const userData = {
       ...data,
@@ -17,8 +29,12 @@ const Register = () => {
         "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
     };
     console.log("Register Form Data:", userData);
-    registerUser(userData);
+    handleUserRegistration(userData);
   };
+
+  if (isPending) {
+    return <div>Registering user...</div>;
+  }
   return (
     <div className="flex h-[calc(100vh-200px)] w-full flex-col items-center justify-center">
       <h3 className="my-2 text-2xl font-bold">Register with FoundX</h3>

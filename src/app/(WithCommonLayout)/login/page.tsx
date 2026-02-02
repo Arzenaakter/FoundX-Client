@@ -8,8 +8,13 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import loginValidationSchema from "@/src/schema/login.schema";
 import { useUserLogin } from "@/src/hooks/auth.hook";
 import Loading from "@/src/components/UI/Loading";
+import { useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 const Login = () => {
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirect");
+  const router = useRouter();
   const {
     mutate: handleUserLogin,
     data,
@@ -18,10 +23,18 @@ const Login = () => {
     isPending,
   } = useUserLogin();
 
-  // console.log({ data, isSuccess, isError, isPending });
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     handleUserLogin(data);
   };
+  useEffect(() => {
+    if (!isPending && isSuccess) {
+      if (redirect) {
+        router.push(redirect);
+      } else {
+        router.push("/");
+      }
+    }
+  }, [isPending, isSuccess]);
   return (
     <>
       {isPending && <Loading />}

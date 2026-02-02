@@ -9,12 +9,18 @@ import { Avatar } from "@heroui/avatar";
 import Link from "next/link";
 import { Button } from "@heroui/button";
 import { logoutUser } from "@/src/services/AuthService";
+import { useUser } from "@/src/context/user.provider";
 
 const NavbarDropdown = () => {
+  const { user, setIsLoading } = useUser();
+  const handleLogOut = () => {
+    logoutUser();
+    setIsLoading(true);
+  };
   return (
     <Dropdown>
       <DropdownTrigger>
-        <Avatar name="Arzena" />
+        <Avatar name={user?.name} />
       </DropdownTrigger>
       <DropdownMenu aria-label="Static Actions">
         <DropdownItem key="profile" as={Link} href={"/profile"}>
@@ -34,7 +40,7 @@ const NavbarDropdown = () => {
         </DropdownItem>
 
         <DropdownItem
-          onClick={() => logoutUser()}
+          onClick={() => handleLogOut()}
           key="delete"
           className="text-danger"
           color="danger"

@@ -5,13 +5,14 @@ import {
   Dispatch,
   ReactNode,
   SetStateAction,
+  useContext,
   useEffect,
   useState,
 } from "react";
 import { IUser } from "../types";
 import { getCurrentUser } from "../services/AuthService";
 
-const userContext = createContext<IUserProviderProps | undefined>(undefined);
+const UserContext = createContext<IUserProviderProps | undefined>(undefined);
 
 interface IUserProviderProps {
   user: IUser | null;
@@ -32,12 +33,20 @@ const Userprovider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     handleUser();
-  }, []);
+  }, [isLoading]);
   return (
-    <userContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>
+    <UserContext.Provider value={{ user, setUser, isLoading, setIsLoading }}>
       {children}
-    </userContext.Provider>
+    </UserContext.Provider>
   );
+};
+
+export const useUser = () => {
+  const context = useContext(UserContext);
+  if (context === undefined) {
+    throw new Error("useUser must be used within a UserProvider");
+  }
+  return context;
 };
 
 export default Userprovider;

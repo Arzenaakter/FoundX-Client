@@ -1,4 +1,5 @@
 import { NextResponse, NextRequest } from "next/server";
+import { getCurrentUser } from "./services/AuthService";
 
 const authRoutes = ["/login", "/register"];
 
@@ -7,10 +8,14 @@ const roleBasedRoutes = {
   ADMIN: [/^\/admin/],
   USER: [/^\/profile/],
 };
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const user = undefined;
-  // const user = { role: "USER" };
+  // const user = undefined;
+  const user = { role: "USER" };
+
+  const userToken = await getCurrentUser();
+  console.log("Middleware User Token:", userToken);
+  console.log("Middleware Pathname:", pathname);
 
   if (!user) {
     if (authRoutes.includes(pathname)) {

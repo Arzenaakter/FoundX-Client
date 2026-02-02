@@ -18,7 +18,7 @@ const Login = () => {
     isPending,
   } = useUserLogin();
 
-  console.log({ data, isSuccess, isError, isPending });
+  // console.log({ data, isSuccess, isError, isPending });
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     handleUserLogin(data);
   };

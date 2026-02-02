@@ -2,11 +2,12 @@
 import axiosInstance from "@/src/lib/AxiosIntance";
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
+import { jwtDecode } from "jwt-decode";
 
 export const registerUser = async (userData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post("/auth/register", userData);
-    console.log("Registration Response:", data);
+
     if (data.success) {
       (await cookies()).set("accessToken", data?.data?.accessToken);
       (await cookies()).set("refreshToken", data?.data?.refreshToken);
@@ -20,7 +21,7 @@ export const registerUser = async (userData: FieldValues) => {
 export const loginUser = async (userData: FieldValues) => {
   try {
     const { data } = await axiosInstance.post("/auth/login", userData);
-    console.log("Login Response:", data);
+
     if (data.success) {
       (await cookies()).set("accessToken", data?.data?.accessToken);
       (await cookies()).set("refreshToken", data?.data?.refreshToken);
@@ -29,4 +30,22 @@ export const loginUser = async (userData: FieldValues) => {
   } catch (error: any) {
     throw new Error(error);
   }
+};
+
+export const getCurrentUser = async () => {
+  const accessToken = (await cookies()).get("accessToken")?.value;
+  let decodedToken = null;
+  if (accessToken) {
+    decodedToken = await jwtDecode(accessToken);
+
+    return {
+      _id: decodedToken._id,
+      name: decodedToken.name,
+      email: decodedToken.email,
+      mobileNumber: decodedToken.mobileNumber,
+      role: decodedToken.role,
+      status: decodedToken.status,
+    };
+  }
+  return decodedToken;
 };

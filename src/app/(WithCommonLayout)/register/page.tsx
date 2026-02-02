@@ -21,14 +21,13 @@ const Register = () => {
     isPending,
   } = useUserRegistration();
 
-  console.log({ data, isSuccess, isError, isPending });
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     const userData = {
       ...data,
       profilePhoto:
         "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png",
     };
-    console.log("Register Form Data:", userData);
+
     handleUserRegistration(userData);
   };
 

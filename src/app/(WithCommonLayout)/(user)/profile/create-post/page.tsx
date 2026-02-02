@@ -14,7 +14,11 @@ const CreatePost = () => {
   });
 
   const onSubmit = (data: any) => {
-    console.log(data);
+    const postData = {
+      ...data,
+      questions: data.questions.map((que: { value: string }) => que.value),
+    };
+    console.log(postData);
   };
 
   const handleFieldAppend = () => {
@@ -30,8 +34,9 @@ const CreatePost = () => {
           <Button onClick={() => handleFieldAppend()}>Append</Button>
         </div>
         {fields.map((field, index) => (
-          <div key={field.id} className="my-3">
+          <div key={field.id} className="my-3 flex items-center gap-3">
             <FXInput name={`questions.${index}.value`} label="Question" />
+            <Button onClick={() => remove(index)}>Remove</Button>
           </div>
         ))}
         <Divider className="my-5" />

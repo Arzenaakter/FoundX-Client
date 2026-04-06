@@ -60,7 +60,7 @@ const Post = ({ post }: { post: IPost }) => {
         <ImageGallery images={images} />
 
         <div className="mt-4 flex gap-5">
-          <ClaimRequestModal />
+          <ClaimRequestModal id={_id} questions={questions} />
           {/* {email !== loggedInUser?.email && (
             <>
               {loggedInUser?.email && (

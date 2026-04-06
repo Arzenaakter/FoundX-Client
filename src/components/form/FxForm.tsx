@@ -1,4 +1,5 @@
 "use client";
+import { ReactNode } from "react";
 import { FormProvider, SubmitHandler, useForm } from "react-hook-form";
 
 interface FxFormProps {
@@ -7,7 +8,7 @@ interface FxFormProps {
 }
 
 interface IProps extends FxFormProps {
-  children: React.ReactNode;
+  children: ReactNode;
   onSubmit: SubmitHandler<any>;
 }
 

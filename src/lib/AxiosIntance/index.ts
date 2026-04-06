@@ -1,30 +1,43 @@
 import envConfig from "@/src/config/envConfig";
 import axios from "axios";
-import { cookies } from "next/headers";
+// import { cookies } from "next/headers";
+
 const axiosInstance = axios.create({
   baseURL: envConfig.baseApi,
 });
 
-axiosInstance.interceptors.request.use(
-  async function (config) {
-    const cookieStore = cookies();
-    const accessToken = (await cookieStore).get("accessToken")?.value;
+// axiosInstance.interceptors.request.use(
+//   async function (config) {
+//     const cookieStore = await cookies();
+//     const accessToken = cookieStore.get("accessToken")?.value;
 
-    if (accessToken) {
-      config.headers.Authorization = accessToken;
+//     if (accessToken) {
+//       config.headers.Authorization = accessToken;
+//     }
+//     return config;
+//   },
+//   function (error) {
+//     return Promise.reject(error);
+//   },
+// );
+
+axiosInstance.interceptors.request.use((config) => {
+  if (typeof document !== "undefined") {
+    const match = document.cookie.match(/accessToken=([^;]+)/);
+    const token = match?.[1];
+
+    if (token) {
+      config.headers.Authorization = token;
     }
-    return config;
-  },
-  function (error) {
-    return Promise.reject(error);
-  },
-);
+  }
+  return config;
+});
 
 axiosInstance.interceptors.response.use(
-  function onFulfilled(response) {
+  function (response) {
     return response;
   },
-  function onRejected(error) {
+  function (error) {
     return Promise.reject(error);
   },
 );

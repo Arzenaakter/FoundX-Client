@@ -8,6 +8,7 @@ import ImageGallery from "./ImageGallery";
 import { Button } from "@heroui/button";
 import Link from "next/link";
 import ClaimRequestModal from "../../modals/ClaimRequestModal";
+import AuthenticationModal from "../../modals/AuthenticationModal";
 
 const Post = ({ post }: { post: IPost }) => {
   const {
@@ -60,15 +61,14 @@ const Post = ({ post }: { post: IPost }) => {
         <ImageGallery images={images} />
 
         <div className="mt-4 flex gap-5">
-          <ClaimRequestModal id={_id} questions={questions} />
-          {/* {email !== loggedInUser?.email && (
+          {email !== loggedInUser?.email && (
             <>
               {loggedInUser?.email && (
                 <ClaimRequestModal id={_id} questions={questions} />
               )}
               {!loggedInUser?.email && <AuthenticationModal id={_id} />}
             </>
-          )} */}
+          )}
           {email !== loggedInUser?.email && (
             <div className="w-[1px] bg-default-200" />
           )}

@@ -11,7 +11,6 @@ export const useAddClaimRequest = () => {
       toast.success("Claim Request Created Successfully");
     },
     onError: (error) => {
-      console.log("error", error);
       toast.error(error.message);
     },
   });
